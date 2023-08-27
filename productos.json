@@ -1,0 +1,22 @@
+[
+    {
+        "title": "pan integral con semillas",
+        "description": "pan con mix de semillas y harina integral ",
+        "price": 500,
+        "code": "ep2",
+        "status": true,
+        "stock": 10,
+        "thumbnail": [],
+        "id": 169300507114
+    },
+    {
+        "title": "pan blanco con semillas",
+        "description": "pan con mix de semillas y harina integral ",
+        "price": 1000,
+        "code": "ep1",
+        "status": true,
+        "stock": 10,
+        "thumbnail": [],
+        "id": 169300508758
+    }
+]
