@@ -35,7 +35,7 @@ prodsRouter.get('/', async (req, res) => {
 prodsRouter.get('/:id', async (req, res) => {
     try {
         const {id} = req.params;
-        const product = await productManager.getProductById(parseInt(id));
+        const product = await productManager.getProductById(id);
 
         if (product) {
             res.status(200).send(product);

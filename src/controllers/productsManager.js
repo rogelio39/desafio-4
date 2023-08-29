@@ -46,13 +46,13 @@ export class ProductsManager {
 
     async updatedProduct(productId, propertyName, newValue) {
         try {
-            const productToUpdate = this.products.find((prod) => prod.id === productId);
+            const productToUpdate = this.products.find((prod) => prod.id.toString() === productId);
             if (!productToUpdate) {
                 throw new Error('producto no encontrado');
             } else {
                 productToUpdate[propertyName] = newValue;
 
-                const index = this.products.findIndex((prod) => prod.id === productId);
+                const index = this.products.findIndex((prod) => prod.id.toString() === productId);
                 if (index !== -1) {
                     this.products[index] = productToUpdate;
                     const productos = JSON.stringify(this.products, null, 4)
@@ -65,7 +65,7 @@ export class ProductsManager {
     }
 
     async getProductById(id) {
-        const productId = this.products.find((prod) => prod.id === id);
+        const productId = this.products.find((prod) => prod.id.toString() === id);
         if (productId) {
             console.log('producto encontrado')
             console.log(productId);
@@ -84,9 +84,9 @@ export class ProductsManager {
 
     async deleteProduct(id) {
         try {
-            const products = this.products.find((prod) => prod.id === id);
+            const products = this.products.find((prod) => prod.id.toString() === id);
             if (products) {
-                const prodsToDelete = this.products.filter(prod => prod.id !== id);
+                const prodsToDelete = this.products.filter(prod => prod.id.toString() !== id);
                 this.products = prodsToDelete;
                 await this.writeProducts();
             }

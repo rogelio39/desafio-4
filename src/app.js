@@ -14,6 +14,8 @@ import cartRouter from "./routes/cart.routes.js";
 
 const PORT = 4000;
 
+const app = express();
+
 //config multer
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -24,16 +26,13 @@ const storage = multer.diskStorage({
     }
 });
 
-
-//middleware
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 const server = app.listen(PORT, () => {
     console.log(`server on port ${PORT}`);
 });
 
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
@@ -46,10 +45,25 @@ app.use('/static', express.static(path.join(__dirname, '/public')));
 
 //server socket.io
 const io = new Server(server);
-
-io.on('connection', ()=>{
+const messages = [];
+//lado del servidor
+io.on('connection', (socket)=>{
     console.log('servidor Socket.io connected');
+    socket.on('mensajeConexion', (user) => {
+        if(user.rol === "admin"){
+            socket.emit('credencialesConexion', 'Usuario valido')
+        } else{
+            socket.emit('credencialesConexion', 'usuario no valido')
+        }
+    })
+    
+    socket.on('message', (messageInfo) => {
+        messages.push(messageInfo);
+        socket.emit('message',  messages);
+    })
 })
+
+
 
 //routes productos
 app.use('/api/products', prodsRouter);
@@ -58,10 +72,13 @@ app.use('/api/products', prodsRouter);
 //routes cart
 app.use('/api/carts', cartRouter);
 
+app.get('/static', (req, res) => {
 
-app.get('/', (req, res) => {
-    res.send('inicio')
-});
+    res.render('chat', { 
+        css : "style.css",
+        title: "Chat"
+    })
+})
 
 //este es el endpoint en el que me voy a conectar a mi aplicacion
 app.post('/upload', upload.single('product'), (req, res) => {
