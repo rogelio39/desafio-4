@@ -41,19 +41,3 @@ Swal.fire({
 
 
 
-// chatButton.addEventListener('click', () => {
-//     let actualDate = new Date().toLocaleString();
-
-//     if (inputValue.value.trim().length > 0) {
-//         socket.emit('message', { date: actualDate, user: user, message: inputValue.value })
-//         inputValue.value = '';
-//     }
-// })
-
-
-// socket.on('message', (messagesArray) => {
-//     messageParagraph.innerHTML = '';
-//     messagesArray.forEach(message => {
-//         messageParagraph.innerHTML += `<p>${message.date} : El usuario ${message.user} escribio: ${message.message}</p>`;
-//     })
-// })
