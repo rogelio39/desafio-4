@@ -2,7 +2,15 @@
     "idCart": 1,
     "productsCart": [
         {
-            "id": "169300507114",
+            "id": 1,
+            "quantity": 15
+        },
+        {
+            "id": 2,
+            "quantity": 3
+        },
+        {
+            "id": 3,
             "quantity": 1
         }
     ]
