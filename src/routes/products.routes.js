@@ -69,9 +69,9 @@ prodsRouter.post('/', async (req, res) => {
 prodsRouter.delete('/:id', async (req, res) => {
     try {
         const {id} = req.params;
-        const deletedProd = await productManager.deleteProduct(parseInt(id));
+        const deletedProd = await productManager.deleteProduct(id);
 
-        if (deletedProd) {
+        if (!deletedProd) {
             res.status(200).send("producto eliminado correctamente");
         } else {
             res.status(400).send('error al eliminar producto');

@@ -91,7 +91,7 @@ export class ProductsManager {
                 await this.writeProducts();
             }
         } catch (error) {
-            console.error('error al eliminar el producto', error.message);
+            console.error('error', error);
         }
     }
 }
