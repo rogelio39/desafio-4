@@ -4,6 +4,11 @@ import { __dirname } from "./path.js";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import path from 'path';
+import { ProductsManager } from "./controllers/productsManager.js";
+import { Products } from "./models/Products.js";
+
+const productManager = new ProductsManager();
+const productos = [];
 
 
 //rutas productos
@@ -45,24 +50,28 @@ app.use('/static', express.static(path.join(__dirname, '/public')));
 
 //server socket.io
 const io = new Server(server);
-const messages = [];
 //lado del servidor
-io.on('connection', (socket)=>{
+io.on('connection', (socket) => {
     console.log('servidor Socket.io connected');
-    socket.on('mensajeConexion', (user) => {
-        if(user.rol === "admin"){
-            socket.emit('credencialesConexion', 'Usuario valido')
-        } else{
+
+    socket.on('datosUsuario', (user) => {
+        if (user.rol === "admin") {
+            socket.emit('credencialesConexion', 'usuario valido')
+        } else {
             socket.emit('credencialesConexion', 'usuario no valido')
         }
     })
-    
-    socket.on('message', (messageInfo) => {
-        messages.push(messageInfo);
-        socket.emit('message',  messages);
-    })
-})
 
+    socket.on('nuevoProducto', async (nuevoProd) => {
+        // const {title, description, price, stock, code, category,  status, thumbnail} = nuevoProd;
+        // const newProduct = new Products(title, description, price, stock, code, category, status, thumbnail);
+        // productManager.addProduct(newProduct);
+        productos.push(nuevoProd);
+        socket.emit('prod', productos)
+    })
+    
+
+})
 
 
 //routes productos
@@ -72,11 +81,14 @@ app.use('/api/products', prodsRouter);
 //routes cart
 app.use('/api/carts', cartRouter);
 
-app.get('/static', (req, res) => {
+app.get('/static', async (req, res) => {
+    const productos = await productManager.getProducts();
 
-    res.render('chat', { 
-        css : "style.css",
-        title: "Chat"
+    res.render('realTimeProducts', {
+        css: "realTimeProducts.css",
+        title: "Products",
+        prods : productos,
+        js : 'realTimeProducts.js'
     })
 })
 

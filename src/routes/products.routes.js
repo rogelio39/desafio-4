@@ -2,6 +2,7 @@ import {Router} from "express";
 import { ProductsManager } from "../controllers/productsManager.js";
 import { Products } from "../models/Products.js";
 
+
 const productManager = new ProductsManager();
 
 async function addProduct(prod) {
