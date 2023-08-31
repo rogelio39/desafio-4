@@ -66,9 +66,9 @@ export class Cart {
 }
 
     async getCartById(id) {
+        this.products = await this.readProducts();
         if (this.id === id) {
             console.log('carrito encontrado')
-            console.log(this.products);
             return this.products;
         } else {
             console.log('carrito no encontrado');

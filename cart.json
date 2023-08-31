@@ -3,15 +3,7 @@
     "productsCart": [
         {
             "id": 1,
-            "quantity": 15
-        },
-        {
-            "id": 2,
-            "quantity": 3
-        },
-        {
-            "id": 3,
-            "quantity": 1
+            "quantity": 2
         }
     ]
 }

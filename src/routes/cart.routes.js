@@ -24,12 +24,12 @@ cartRouter.get('/:cid', async (req, res) => {
         const cartId = parseInt(cid);
         const cartProds = await cart.getCartById(cartId);
         if(cartProds){
-            res.status(200).send(cartProds);
+            res.status(200).send(cartProds.productsCart);
         } else {
             res.status(404).send('not found');
         }
         } catch (error) {
-        res.status(500).send('error al cargar productos');
+        res.status(500).send('error al cargar carrito');
     }
 })  
 
