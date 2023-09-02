@@ -41,9 +41,8 @@ export class Cart {
         await fs.writeFile(this.path, datos, 'utf8');
     }
 
-    async addProduct(product) {
+    async addProduct(id) {
         try {
-            const {id, quantity} = product;
             // Verificar si existe el producto
             const existingProductIndex = this.products.productsCart.findIndex(prod => prod.id === id);
     
@@ -51,12 +50,13 @@ export class Cart {
                 // Producto ya existe, aumentar cantidad
                 this.products.productsCart[existingProductIndex].quantity++;
                 await this.writeFile();
+                return true;
             } else {
                 // Producto no existe, agregarlo al array
-                this.products.productsCart.push({id : id, quantity: quantity});
+                this.products.productsCart.push({id : id, quantity: 1});
                 console.log('Producto agregado');
                 await this.writeFile();
-
+                return true;
             }
         } catch (error) {
             console.error('Error al agregar el producto');

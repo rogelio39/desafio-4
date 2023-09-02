@@ -1,4 +1,4 @@
-import {Router} from "express";
+import { Router } from "express";
 import { Cart } from "../controllers/cart.js";
 import { ProductsManager } from "../controllers/productsManager.js";
 
@@ -20,41 +20,39 @@ cartRouter.post('/', async (req, res) => {
 
 cartRouter.get('/:cid', async (req, res) => {
     try {
-        const {cid} = req.params;
+        const { cid } = req.params;
         const cartId = parseInt(cid);
         const cartProds = await cart.getCartById(cartId);
-        if(cartProds){
+        if (cartProds) {
             res.status(200).send(cartProds.productsCart);
         } else {
             res.status(404).send('not found');
         }
-        } catch (error) {
+    } catch (error) {
         res.status(500).send('error al cargar carrito');
     }
-})  
+})
 
 
 
 
 cartRouter.post('/:cid/product/:pid', async (req, res) => {
     try {
-        const {pid} = req.params;
-        const productId = parseInt(pid);
-        const newProd = {id: productId, quantity: 1};
-
-        const productsFromJson = await productManager.getProducts();
-        const productsFromCart = await cart.getProducts();
-
-        const productJson = productsFromJson.find(prod => prod.id === productId);
-        const productCart = productsFromCart.find(prod => prod.id === productId);
-        if(productJson) {
-            res.status(404).send('Ya existe un producto en base de datos con ese id');
-        } else if (productCart) {
-            await cart.addProduct(productCart);
-            res.status(200).send(`cantidad de producto actualizado a ${productCart.quantity}`);
+        const { cid, pid } = req.params;
+        const cartProds = await cart.getCartById(parseInt(cid));
+        if (cartProds) {
+            const productsFromJson = await productManager.getProducts();
+            const productJson = productsFromJson.find(prod => prod.id ===  parseInt(pid));
+            const prodCreated =  await cart.addProduct(parseInt(pid));
+            if (productJson) {
+                res.status(404).send('Ya existe un producto en base de datos con ese id');
+            } else if(prodCreated){
+                res.status(200).send(`producto agregado con exito`);
+            } else {
+                res.status(400).send('error al agregar producto');
+            }
         } else {
-            await cart.addProduct(newProd);
-            res.status(200).send('producto creado con exito');
+            res.status(400).send('Carrito no existe');
         }
     } catch (error) {
         res.status(500).send('error');
