@@ -1,11 +1,11 @@
 
 import { promises as fs } from 'fs';
 
-export class Cart {
+export class cartManager {
     constructor(path) {
         this.products = [];
         this.path = path;
-        this.id = Cart.generadorId();
+        this.id = cartManager.generadorId();
     }   
     
     
