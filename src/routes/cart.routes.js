@@ -10,7 +10,7 @@ const cart = new cartManager('./cart.json');
 cartRouter.post('/', async (req, res) => {
     try {
         await cart.createCart();
-        const newCart = await cartManager.getProducts();
+        const newCart = await cart.getProducts();
         res.status(200).send(`Carrito creado con exito ${JSON.stringify(newCart, null, 4)}`);
     } catch (error) {
         res.status(500).send('error');
@@ -22,7 +22,7 @@ cartRouter.get('/:cid', async (req, res) => {
     try {
         const { cid } = req.params;
         const cartId = parseInt(cid);
-        const cartProds = await cartManager.getCartById(cartId);
+        const cartProds = await cart.getCartById(cartId);
         if (cartProds) {
             res.status(200).send(cartProds.productsCart);
         } else {
@@ -39,11 +39,11 @@ cartRouter.get('/:cid', async (req, res) => {
 cartRouter.post('/:cid/product/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params;
-        const cartProds = await cartManager.getCartById(parseInt(cid));
+        const cartProds = await cart.getCartById(parseInt(cid));
         if (cartProds) {
             const productsFromJson = await productManager.getProducts();
             const productJson = productsFromJson.find(prod => prod.id ===  parseInt(pid));
-            const prodCreated =  await cartManager.addProduct(parseInt(pid));
+            const prodCreated =  await cart.addProduct(parseInt(pid));
             if (productJson) {
                 res.status(404).send('Ya existe un producto en base de datos con ese id');
             } else if(prodCreated){
