@@ -4,7 +4,7 @@ import { ProductsManager } from "../controllers/productsManager.js";
 
 const cartRouter = Router();
 const productManager = new ProductsManager();
-const cart = new cartManager('./cart.json');
+const cart = new cartManager();
 
 
 cartRouter.post('/', async (req, res) => {
