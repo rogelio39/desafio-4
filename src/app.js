@@ -8,7 +8,9 @@ import { ProductsManager } from "./controllers/productsManager.js";
 import { Products } from "./models/Products.js";
 
 const productManager = new ProductsManager();
-const productos = [];
+
+
+
 
 
 //rutas productos
@@ -51,8 +53,12 @@ app.use('/static', express.static(path.join(__dirname, '/public')));
 //server socket.io
 const io = new Server(server);
 //lado del servidor
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
     console.log('servidor Socket.io connected');
+
+    const productos = await productManager.getProducts();
+
+    socket.emit('prods', productos)
 
     socket.on('datosUsuario', (user) => {
         if (user.rol === "admin") {
@@ -67,7 +73,6 @@ io.on('connection', (socket) => {
         const newProduct = new Products(title, description, price, stock, code, category, status, thumbnail);
         productManager.addProduct(newProduct);
         const productos = await productManager.getProducts();
-        console.log(productos);
         socket.emit('prod', productos)
     })
 
