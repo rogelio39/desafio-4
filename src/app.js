@@ -63,12 +63,14 @@ io.on('connection', (socket) => {
     })
 
     socket.on('nuevoProducto', async (nuevoProd) => {
-        // const {title, description, price, stock, code, category,  status, thumbnail} = nuevoProd;
-        // const newProduct = new Products(title, description, price, stock, code, category, status, thumbnail);
-        // productManager.addProduct(newProduct);
-        productos.push(nuevoProd);
+        const {title, description, price, stock, code, category,  status, thumbnail} = nuevoProd;
+        const newProduct = new Products(title, description, price, stock, code, category, status, thumbnail);
+        productManager.addProduct(newProduct);
+        const productos = await productManager.getProducts();
+        console.log(productos);
         socket.emit('prod', productos)
     })
+
     
 
 })

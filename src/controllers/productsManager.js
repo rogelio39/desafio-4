@@ -7,36 +7,35 @@ export class ProductsManager {
         this.path = './productos.json';
     }
 
-    async writeProducts() {
-        const datos = JSON.stringify(this.products, null, 4);
+    async writeProducts(data) {
+        const datos = JSON.stringify(data, null, 4);
         await fs.writeFile(this.path, datos, 'utf8');
     }
 
     async readProducts() {
         try {
             const data = JSON.parse(await fs.readFile(this.path, 'utf-8'));
-            this.products = data;
-            this.products.forEach(producto => this.usedIds.add(producto.id));
-            return this.products;
+            data.forEach(producto => this.usedIds.add(producto.id));
+            return data;
         } catch (error) {
             if (error) {
-                this.products = [];
-                this.usedIds = new Set();
+                return [];
             }
         }
     }
 
     async addProduct(product) {
         try {
+            const products = await this.readProducts();
             //verificar si existe el producto
-            const existingProduct = this.products.find(prod => prod.code === product.code);
+            const existingProduct = products.find(prod => prod.code === product.code);
             if (existingProduct && this.usedIds.has(product.id)) {
                 throw new Error('el producto ya existe');
             } else {
-                this.products.push(product);
+                products.push(product);
                 this.usedIds.add(product.id)
                 console.log('producto agregado');
-                await this.writeProducts();
+                await this.writeProducts(products);
             }
         } catch (error) {
             console.error('error al agregar el producto');
