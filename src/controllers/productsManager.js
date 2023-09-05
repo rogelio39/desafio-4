@@ -76,9 +76,13 @@ export class ProductsManager {
     }
 
     async getProducts() {
-        const products = await this.readProducts();
-        // console.log(products)
-        return products;
+        try{
+            const products = await this.readProducts();
+            // console.log(products)
+            return products;
+        } catch(error){
+            return null;
+        }
     }
 
     async deleteProduct(id) {

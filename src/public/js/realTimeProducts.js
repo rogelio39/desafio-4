@@ -19,7 +19,9 @@ form.addEventListener('submit', (e) => {
 
 socket.on('prods', productos => {
 
-    if(productos){
+    if (productos.length === 0) {
+        showProducts.innerHTML = '<p>No hay productos para mostrar</p>'
+    } else {
         let productsHTML = ''; // Variable para almacenar el contenido HTML de todos los productos
         productos.forEach(prod => {
             // Concatenar el contenido de cada producto en productsHTML
@@ -34,8 +36,6 @@ socket.on('prods', productos => {
         });
         // Asignar el contenido acumulado a showProducts.innerHTML
         showProducts.innerHTML = productsHTML;
-    } else {
-        showProducts.innerHTML = '<p>Aun no hay productos disponibles</p>'
     }
 })
 
@@ -60,7 +60,7 @@ socket.on('prod', (productos) => {
 
 
 
-btnProducts.addEventListener('click', () => { 
+btnProducts.addEventListener('click', () => {
     if (showProducts.classList.contains('off')) {
         showProducts.classList.remove('off');
         showProducts.classList.add('on');
@@ -70,4 +70,4 @@ btnProducts.addEventListener('click', () => {
         showProducts.classList.add('off');
         btnProducts.textContent = 'Mostrar productos'
     }
-    })
+})

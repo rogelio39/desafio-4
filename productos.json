@@ -4,44 +4,8 @@
         "description": "1",
         "price": "100",
         "code": "10",
-        "status": "10p",
+        "status": "11",
         "stock": "1",
-        "id": "4b231f02-5ffc-45b4-aed8-8801fb1e80de"
-    },
-    {
-        "title": "1",
-        "description": "1",
-        "price": "100",
-        "code": "10",
-        "status": "10p",
-        "stock": "1",
-        "id": "fc2862d3-2ac6-45cc-a010-8c267819e825"
-    },
-    {
-        "title": "1lol",
-        "description": "1",
-        "price": "100",
-        "code": "10",
-        "status": "10p",
-        "stock": "1",
-        "id": "8809313c-4957-4c63-b1d5-f259d313a40d"
-    },
-    {
-        "title": "1",
-        "description": "1",
-        "price": "100",
-        "code": "10",
-        "status": "10p",
-        "stock": "1",
-        "id": "fc9edc1e-f72b-45b4-96ed-7efdcbab5b62"
-    },
-    {
-        "title": "1",
-        "description": "1",
-        "price": "100",
-        "code": "10",
-        "status": "10p",
-        "stock": "1",
-        "id": "8718708c-197d-4e1e-ae4e-fe2b4bcb4cb8"
+        "id": "adeecaa8-ab77-40db-88c7-1925580740dc"
     }
 ]
