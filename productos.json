@@ -1,11 +1,11 @@
 [
     {
-        "title": "pan integral",
-        "description": "pan con harina integral",
+        "title": "Pan integral",
+        "description": "pan de molde con harina integral",
         "price": "1500",
-        "code": "150",
-        "status": "2p",
+        "code": "15",
+        "status": "p101",
         "stock": "panes",
-        "id": "7723e5bd-b5dc-4b30-88de-7d1baa36ea39"
+        "id": "c3ee6b1f-c020-4dbe-ba16-2ada9c06dfe1"
     }
 ]
