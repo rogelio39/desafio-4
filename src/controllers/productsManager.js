@@ -1,9 +1,8 @@
 import { promises as fs } from 'fs';
 
+
 export class ProductsManager {
     constructor() {
-        this.products = [];
-        this.usedIds = new Set();
         this.path = './productos.json';
     }
 
@@ -15,7 +14,6 @@ export class ProductsManager {
     async readProducts() {
         try {
             const data = JSON.parse(await fs.readFile(this.path, 'utf-8'));
-            data.forEach(producto => this.usedIds.add(producto.id));
             return data;
         } catch (error) {
             if (error) {
@@ -29,11 +27,10 @@ export class ProductsManager {
             const products = await this.readProducts();
             //verificar si existe el producto
             const existingProduct = products.find(prod => prod.code === product.code);
-            if (existingProduct && this.usedIds.has(product.id)) {
+            if (existingProduct) {
                 throw new Error('el producto ya existe');
             } else {
                 products.push(product);
-                this.usedIds.add(product.id)
                 console.log('producto agregado');
                 await this.writeProducts(products);
             }
@@ -45,17 +42,17 @@ export class ProductsManager {
 
     async updatedProduct(productId, propertyName, newValue) {
         try {
-            const productToUpdate = this.products.find((prod) => prod.id.toString() === productId);
+            const products = await this.readProducts()
+            const productToUpdate = products.find((prod) => prod.id === productId);
             if (!productToUpdate) {
                 throw new Error('producto no encontrado');
             } else {
                 productToUpdate[propertyName] = newValue;
 
-                const index = this.products.findIndex((prod) => prod.id.toString() === productId);
+                const index = products.findIndex((prod) => prod.id === productId);
                 if (index !== -1) {
-                    this.products[index] = productToUpdate;
-                    const productos = JSON.stringify(this.products, null, 4)
-                    await this.writeProducts();
+                    products[index] = productToUpdate;
+                    await this.writeProducts(products);
                 }
             }
         } catch (error) {
@@ -64,15 +61,17 @@ export class ProductsManager {
     }
 
     async getProductById(id) {
-        const productId = this.products.find((prod) => prod.id.toString() === id);
+        const products = await this.readProducts()
+        const productId = products.find((prod) => prod.id === id);
+        console.log(productId)
         if (productId) {
             console.log('producto encontrado')
             console.log(productId);
+            return productId;
         } else {
             console.log('Producto no encontrado');
             return null;
         }
-        return productId;
     }
 
     async getProducts() {
@@ -87,17 +86,19 @@ export class ProductsManager {
 
     async deleteProduct(id) {
         try {
-            const products = this.products.find((prod) => prod.id.toString() === id);
-            if (products) {
-                const prodsToDelete = this.products.filter(prod => prod.id.toString() !== id);
-                this.products = prodsToDelete;
-                await this.writeProducts();
+            const products = await this.readProducts();
+            const product = products.find((prod) => prod.id === id);
+            if (product) {
+                const prodsToDelete = products.filter(prod => prod.id !== id);
+                await this.writeProducts(prodsToDelete);
             }
         } catch (error) {
             console.error('error', error);
         }
     }
 }
+
+
 
 
 

@@ -1,10 +1,10 @@
-import {Router} from "express";
-import { Cart } from "../controllers/cart.js";
+import { Router } from "express";
+import { CartManager } from "../controllers/cartManager.js";
 import { ProductsManager } from "../controllers/productsManager.js";
 
 const cartRouter = Router();
 const productManager = new ProductsManager();
-const cart = new cartManager('./cart.json');
+const cart = new CartManager('./cart.json');
 
 
 cartRouter.post('/', async (req, res) => {
@@ -21,10 +21,9 @@ cartRouter.post('/', async (req, res) => {
 cartRouter.get('/:cid', async (req, res) => {
     try {
         const { cid } = req.params;
-        const cartId = parseInt(cid);
-        const cartProds = await cart.getCartById(cartId);
+        const cartProds = await cart.getCartById(cid);
         if (cartProds) {
-            res.status(200).send(cartProds.productsCart);
+            res.status(200).send(cartProds);
         } else {
             res.status(404).send('not found');
         }
@@ -39,11 +38,11 @@ cartRouter.get('/:cid', async (req, res) => {
 cartRouter.post('/:cid/product/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params;
-        const cartProds = await cart.getCartById(parseInt(cid));
+        const cartProds = await cart.getCartById(cid);
         if (cartProds) {
             const productsFromJson = await productManager.getProducts();
             const productJson = productsFromJson.find(prod => prod.id ===  parseInt(pid));
-            const prodCreated =  await cart.addProduct(parseInt(pid));
+            const prodCreated =  await cart.addProduct(cid, parseInt(pid));
             if (productJson) {
                 res.status(404).send('Ya existe un producto en base de datos con ese id');
             } else if(prodCreated){

@@ -8,7 +8,9 @@ import { ProductsManager } from "./controllers/productsManager.js";
 import { Products } from "./models/Products.js";
 
 const productManager = new ProductsManager();
-const productos = [];
+
+
+
 
 
 //rutas productos
