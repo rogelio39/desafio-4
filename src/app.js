@@ -5,7 +5,7 @@ import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import path from 'path';
 import { ProductsManager } from "./controllers/productsManager.js";
-import { Products } from "./models/Products.js";
+import { Products } from "./models/products.js";
 
 const productManager = new ProductsManager();
 
@@ -69,12 +69,10 @@ io.on('connection', async (socket) => {
     })
 
     socket.on('nuevoProducto', async (nuevoProd) => {
-        const {title, description, price, stock, code, category,  status, thumbnail} = nuevoProd;
-        const newProduct = new Products(title, description, price, stock, code, category, status, thumbnail);
+        const {title, description, price, stock, code, category} = nuevoProd;
+        const newProduct = new Products(title, description, price, stock, code, category, true, []);
         productManager.addProduct(newProduct);
-        // const productos = productManager.getProducts();
         socket.emit('prod', newProduct);
-        // socket.emit('prods', productos);
     })
 
     

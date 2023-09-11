@@ -24,7 +24,6 @@ socket.on('prods', prods => {
 socket.on('prod', prod => {
     products.push(prod);
     renderProducts();
-    socket.emit('prods', products)
 }
 )
 
